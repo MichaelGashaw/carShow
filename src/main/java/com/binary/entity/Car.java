@@ -1,5 +1,6 @@
 package com.binary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,10 +20,12 @@ public class Car {
     private String color;
     private String registerNumber;
     private int year;
+    private String make;
     @Column(name = "car_price")
     private double price;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner")
+    @JsonIgnore
     private Owner owner;
 
     public Car(String brand, String model, String color, String registerNumber, int year, double price, Owner owner) {
@@ -34,4 +37,5 @@ public class Car {
         this.price = price;
         this.owner = owner;
     }
+
 }

@@ -1,19 +1,21 @@
 package com.binary.controller;
 
+import com.binary.dto.CarDto;
 import com.binary.entity.Car;
+import com.binary.exceptions.CarNotFoundException;
 import com.binary.service.CarService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/car")
 public class CarController {
+
     @Autowired
     private CarService carService;
 
@@ -23,14 +25,30 @@ public class CarController {
     }
 
     @GetMapping("/list")
-    public List<Car> getAllCars() {
-        return (List<Car>) carService.getAllCars();
+    public ResponseEntity<List<Car>> getAllCars() {
+        return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
     }
 
-    //http://localhost:8080/api/v1/car/newlist
-    @GetMapping("/newlist")
-    public ResponseEntity<List<Car>> getCars() {
-        return new ResponseEntity<>((List<Car>) carService.getAllCars(), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Car> getCarById(@PathVariable long id) throws CarNotFoundException {
+        return new ResponseEntity<>(carService.getCarById(id), HttpStatus.OK);
     }
 
+    @PostMapping("/createCar")
+    public ResponseEntity<Car> createCar(@RequestBody @Valid CarDto carDto) {
+        Car createdCar = carService.createCar(carDto);
+        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/updateCar/{id}")
+    public ResponseEntity<Car> updateCar(@PathVariable long id, @RequestBody @Valid CarDto carDto) throws CarNotFoundException {
+        Car updatedCar = carService.updateCar(id, carDto);
+        return new ResponseEntity<>(updatedCar, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Long> deleteCar(@PathVariable long id) throws CarNotFoundException {
+        carService.deleteCar(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
 }

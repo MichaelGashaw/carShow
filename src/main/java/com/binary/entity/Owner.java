@@ -1,11 +1,11 @@
 package com.binary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 import java.util.List;
 
@@ -17,9 +17,10 @@ import java.util.List;
 public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ownerId;
+    private long ownerId;
     private String firstName, lastName;
-    @OneToMany( mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Car> cars;
 
     public Owner(String firstName, String lastName) {
