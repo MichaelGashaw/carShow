@@ -35,6 +35,8 @@ public class CarShowApplication implements CommandLineRunner {
 		Car car4 = new Car("Ford", "Corolla", "Black", "LMN456", 2021, 30000, owner4);
 
 
+
+
 		ownerRepository.save(owner1);
 		ownerRepository.saveAll(Arrays.asList(owner2,owner3,owner4));
 		carRepository.save(car1);

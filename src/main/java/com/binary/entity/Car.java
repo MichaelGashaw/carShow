@@ -28,6 +28,8 @@ public class Car {
     @JsonIgnore
     private Owner owner;
 
+
+
     public Car(String brand, String model, String color, String registerNumber, int year, double price, Owner owner) {
         this.brand = brand;
         this.model = model;
